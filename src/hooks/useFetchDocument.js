@@ -47,9 +47,7 @@ export const useFetchDocument = (docCollection, id) => {
         };
         
         loadDocument();
-
-    }, [docCollection, documents, id, cancelled]);
-
+    },[docCollection, id, cancelled]);
     useEffect(() => {
         return () => setCancelled(true);
     }, []);

@@ -2,7 +2,13 @@
 import { useState, useEffect } from "react";
 
 //firebase
-import { collection, query, orderBy, onSnapshot, where } from "firebase/firestore";
+import {
+    collection,
+    query,
+    orderBy,
+    onSnapshot,
+    where
+} from "firebase/firestore";
 
 //db
 import { db } from "../firebase/config.firebase";
@@ -30,12 +36,13 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
 
                 let q;
 
-                //search
-
-                //dashboard
                 if(search){
                     
-                    q = await query(collectionRef, where("tags", "array-contains", search), orderBy('createdAt', 'desc'));
+                    q = await query(
+                        collectionRef,
+                        where("tags", "array-contains", search),
+                        orderBy('createdAt', 'desc')
+                        );
 
                 } else if(uid){
 
@@ -46,7 +53,11 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
                     );
 
                 }else{
-                    q = await query(collectionRef, orderBy('createdAt', 'desc'));
+
+                    q = await query(
+                        collectionRef,
+                        orderBy('createdAt', 'desc')
+                        );
 
                 }
 
@@ -57,7 +68,7 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
                     setDocuments(
                         querySnapshot.docs.map((doc) => ({
                             id: doc.id,
-                            ...doc.data()
+                            ...doc.data(),
                         }))
                     );
 
@@ -67,7 +78,7 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
 
             }catch (err){
                 console.error(err);
-                setError(error.message);
+                setError(err.message);
 
                 setLoading(false);
             };
