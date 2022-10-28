@@ -18,6 +18,7 @@ import Login from './pages/Login/Login.page';
 import Register from './pages/Register/Register.page';
 import CreatePost from './pages/CreatePost/CreatePost.page';
 import Dashboard from './pages/Dashboard/Dashboard.page';
+import Search from './pages/Search/Search.page';
 
 //components
 import Navbar from './components/Navbar.components';
@@ -26,56 +27,70 @@ import Footer from './components/Footer.component';
 
 //styles
 import './App.css';
+import Post from './pages/Post/Post.page';
 
 function App() {
 
-  const  [ user, setUser ] = useState(undefined);
+  const [user, setUser] = useState(undefined);
   const { auth } = useAuthenthication();
-  
+
   const loadingUser = user === undefined;
-  
+
   useEffect(() => {
 
     onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
-    
+
   }, [auth]);
-  
-  if(loadingUser) return <p>Carregando...</p>
-  
+
+  if (loadingUser) return <p>Carregando...</p>
+
 
   return (
     <div className="App">
-      <AuthProvider value={{user}}>
+      <AuthProvider value={{ user }}>
 
         <BrowserRouter>
           <Navbar />
           <div className="container">
             <Routes>
+              {/* Public Routes */}
+              
               <Route
                 path="/"
-                element ={<Home />}
+                element={<Home />}
               />
               <Route
                 path='/about'
                 element={<About />}
               />
               <Route
+                path='/search'
+                element={<Search />}
+              />
+              <Route
+                path='/posts/:id'
+                element={<Post />}
+              />
+
+              {/* PRIVATE ROUTES */}
+              
+              <Route
                 path='/login'
-                element={ !user? <Login />: <Navigate to='/'/>}
+                element={!user ? <Login /> : <Navigate to='/' />}
               />
               <Route
                 path='/register'
-                element={!user? <Register />: <Navigate to='/' />}
+                element={!user ? <Register /> : <Navigate to='/' />}
               />
               <Route
                 path="/post/create"
-                element={user? <CreatePost />: <Navigate to='/login'/>} 
+                element={user ? <CreatePost /> : <Navigate to='/login' />}
               />
               <Route
                 path="/dashboard"
-                element={user? <Dashboard />: <Navigate to='/login' />} 
+                element={user ? <Dashboard /> : <Navigate to='/login' />}
               />
             </Routes>
           </div>
